@@ -1,58 +1,10 @@
 const http = require('http');
 require ('dotenv').config();
+ http.createServer((req:any, res:any) => {
+  res.write("I'm alive");
+  res.end()
+}).listen(8080)
 
-const server = http.createServer((req:any, res:any) => {
-  res.setHeader('Content-Type', 'text/html');
-  res.end(`
-    <html>
-      <head>
-        <title>Your Web View</title>
-      </head>
-      <body style="margin: 0; padding: 0;">
-        <iframe width="100%" height="100%" src="https://axocoder.vercel.app/" frameborder="0" allowfullscreen></iframe>
-      </body>
-    </html>`);
-});
-
-server.listen(3000, () => {
-  console.log(' ✅ Server is listening on port 3000');
-
-  // Function to ping the server
-  const pingServer = () => {
-    const options = {
-      hostname: process.env.HOST,
-      port: 3000,
-      path: '/',
-      method: 'GET'
-    };
-
-    const req = http.request(options, (res:any) => {
-      let data = '';
-
-      // A chunk of data has been received.
-      res.on('data', (chunk:any) => {
-        data += chunk;
-      });
-
-      // The whole response has been received. Print out the result.
-      res.on('end', () => {
-        console.log('Response received at', new Date().toLocaleTimeString());
-      });
-    });
-
-    req.on('error', (error:any) => {
-      console.error('Error:', error);
-    });
-
-    req.end();
-  };
-
-  // Ping the server every 2 minutes (120,000 milliseconds)
-  setInterval(pingServer, 120000);
-
-  // Initial ping to start the process immediately
-  pingServer();
-});
 
 import  { Client, } from  "discord.js";
 import  {messageCreate } from  './controllers/message';
