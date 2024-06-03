@@ -45,28 +45,24 @@ client.on('ready',async (c) => {
 })
 
 
-const IGNOR_PREFIX = "!";
 const CHANNELS=[JOB_SCRAPING_CHANNEL_ID,AI_CHANENEL_ID];
 
 
 
 client.on('messageCreate', async(message) => {
-    if(message.author.bot){console.log("author is a bot"); return}
-    if(!message.content.startsWith(IGNOR_PREFIX)) {console.log("IGNOR_PREFIX") ;return}
-    if(!CHANNELS.includes(message.channelId) && !message.mentions.users.has(client.user!.id)){console.log("channelId") ;return}
+    if(message.author.bot){ return}
+    if(!CHANNELS.includes(message.channelId) ){return}
     await message.channel.sendTyping();
-    if(message.content.startsWith('!scrape')&& message.channelId===JOB_SCRAPING_CHANNEL_ID) {
-         const args = message.content.slice('scrape'.length).trim();
-        const [jobTitle, location] = args.split(',').map(arg => arg.trim());
+    if(message.channelId===JOB_SCRAPING_CHANNEL_ID) {
+         const args = message.content.trim();
+        const [jobTitle] = args
 
         if (jobTitle) {
-          console.log("srf")
             const response = await scrapeJob(jobTitle);
               console.log(response)
-for(const job of response){
+        for(const job of response){
              const responseString = JSON.stringify(job, null, 2); 
              if(responseString.length>=2000){
-              console.log("Enteredf",responseString)
              const parts =  splitMessage(responseString,1999)
                message.reply(`${responseString}`)
              message.reply(parts[0])
