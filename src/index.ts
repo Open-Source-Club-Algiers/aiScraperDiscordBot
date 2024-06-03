@@ -84,7 +84,6 @@ client.on('messageCreate', async(message) => {
     message.reply("Please ensure the correct syntax for scraping is used:\n!scrape <jobTitle> , <wilayaNumber>\n Ex: !scrape Receptioniste , 16");
 
         }
-    message.reply("**Done**✅ ");
 
       }else{
           const  response=  await  messageCreate(message)
@@ -105,6 +104,8 @@ const text = response.text();
   }
         
       }
+    message.reply("**Done**✅ ");
+
 
 
 
