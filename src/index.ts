@@ -14,7 +14,7 @@ const server = http.createServer((req:any, res:any) => {
 });
 
 server.listen(3000, () => {
-  console.log('Server Online because of Axo Coder ✅!!');
+  console.log(' ✅');
 });
 
 import  { Client, } from  "discord.js";
@@ -23,7 +23,7 @@ import OpenAI from "openai";
 require ('dotenv').config();
 
 import {client,genAI}from'./config'
-import { getWilayaName, splitMessage } from "./utils/functions";
+import {  splitMessage } from "./utils/functions";
 import { scrapeJob } from "./controllers/scraper";
 
 
@@ -59,7 +59,6 @@ client.on('messageCreate', async(message) => {
 
         if (jobTitle) {
             const response = await scrapeJob(jobTitle);
-              console.log(response)
         for(const job of response){
              const responseString = JSON.stringify(job, null, 2); 
              if(responseString.length>=2000){
@@ -88,7 +87,6 @@ client.on('messageCreate', async(message) => {
       }else{
           const  response=  await  messageCreate(message)
   
-console.log(response.text.length,response.text)
   if(response.text().length>=2000){
    const parts =  splitMessage(response.text(),1999)
          message.reply(parts[0])

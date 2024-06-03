@@ -6,8 +6,6 @@ const FETCH_API = process.env.FETCH_API!
 
 const setSearch=(jobTitle:string)=>{
 
-console.log("trim",jobTitle.trim().length)
-console.log("no trim",jobTitle.length)
   function cleanJobTitle(jobTitle:string) {
   // Trim leading and trailing spaces
   jobTitle = jobTitle.trim();

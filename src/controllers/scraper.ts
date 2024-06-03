@@ -8,18 +8,14 @@ const FETCH_API = process.env.FETCH_API;
 const scrapeJob = async (jobTitle: string): Promise<JobListing[]> => {
   const jobListings: JobListing[] = [];
 
-  // Utility function to convert strings to lowercase and replace spaces with hyphens
-
   try {
     const options = setSearch(jobTitle);
-    console.log("options", options);
     var request = require('request');
 
-    // Return a new promise
     return new Promise((resolve, reject) => {
       request(options, function (error: any, response: any) {
         if (error) {
-          console.log("HEHEHE RERROR");
+          console.log("Request Error", error);
           return reject(error);
         }
 
@@ -32,37 +28,38 @@ const scrapeJob = async (jobTitle: string): Promise<JobListing[]> => {
             : post.criteria.location?.label;
 
           try {
-            console.log(post.title);
+            const companyName = post.company?.name;
+            const companyAlias = post.company?.alias;
+            const sectorLabel = post.company?.sector?.label;
 
-            // Determine the correct link format
-            const link = post.company.name===undefined
-              ? `${FETCH_API}/offres-d-emploi/${formatString(post.company.name)}/${post.alias}`
-              : `${FETCH_API}/entreprises/${formatString(post.company.alias).toLowerCase()}/offres-d-emploi/${formatString(post.company.sector.label).toLowerCase()}/${post.alias}`;
+            if (!companyName || !companyAlias || !sectorLabel) {
+              console.error("Missing company details", post.company);
+              continue;  // Skip this post if any required field is missing
+            }
+
+            const link = companyName === undefined
+              ? `${FETCH_API}/offres-d-emploi/${formatString(companyName)}/${post.alias}`
+              : `${FETCH_API}/entreprises/${formatString(companyAlias)}/offres-d-emploi/${formatString(sectorLabel)}/${post.alias}`;
 
             jobListings.push({
               title: post.title,
-              company: post.company.name,
+              company: companyName,
               link: link,
               location: location
             });
-            console.log(jobListings);
           } catch (err) {
-            console.error("ERROR", post.criteria, err);
+            console.error("Post Processing Error", post.criteria, err);
           }
         }
 
-        // Resolve the promise with jobListings
         resolve(jobListings);
       });
     });
 
   } catch (err) {
     console.error("Error:", err);
-    // Return an empty array in case of an error
     return [];
   }
 };
 
-export {
-  scrapeJob
-};
+export { scrapeJob };
