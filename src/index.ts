@@ -55,7 +55,7 @@ client.on('messageCreate', async(message) => {
     await message.channel.sendTyping();
     if(message.channelId===JOB_SCRAPING_CHANNEL_ID) {
          const args = message.content.trim();
-        const [jobTitle] = args
+        const jobTitle = args
 
         if (jobTitle) {
             const response = await scrapeJob(jobTitle);
