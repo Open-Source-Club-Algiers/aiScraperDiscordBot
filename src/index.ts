@@ -78,7 +78,7 @@ for(const job of response){
                   }
 
              }else{
-                                     message.reply(`**Title**: ${job.title}\n\n**Company**:${job.company} **location **:${job.location}\n **For more information, visit the link **:${job.link} `); 
+                                     message.reply(`**Title**: ${job.title}\n**Company**:${job.company} \n**location **:${job.location}\n **For more information, visit the link **:${job.link} `); 
                }
 }
             
